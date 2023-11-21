@@ -2,11 +2,13 @@
   "name": "transaction-downloader",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start:connect": "node connect/server.js",
-    "start:connect:dev": "nodemon connect/server.js"
+    "accounts:update": "node update-accounts.js",
+    "connect": "node connect/server.js",
+    "connect:dev": "nodemon connect/server.js",
+    "sync": "node sync.js"
   },
   "keywords": [],
   "author": "breakthestatic",
