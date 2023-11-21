@@ -9,9 +9,16 @@ const accounts = getActiveAccounts()
 
 const transactionRequests = accounts.map(async (account) => {
   const {token} = institutions[account.institution.id]
-  const {data} = await tellerClient.get(account.links.transactions, {
-    auth: {username: token},
-  })
+  const {data} = await tellerClient
+    .get(account.links.transactions, {auth: {username: token}})
+    .catch(({response: {data}}) => {
+      console.log(
+        `ERROR: ${data.error?.message}`,
+        `(${account.name} ${account.last_four})`,
+        `Enrollment ID: ${account.enrollment_id}`,
+      )
+      return {data: []}
+    })
 
   return data
     .filter(({status}) => status === 'posted')
