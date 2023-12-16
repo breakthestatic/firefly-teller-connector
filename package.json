@@ -8,7 +8,10 @@
     "accounts:update": "node update-accounts.js",
     "connect": "node connect/server.js",
     "connect:dev": "nodemon connect/server.js",
-    "sync": "node sync.js"
+    "transactions:download": "node transactions.js --write",
+    "transactions:download:local": "node transactions.js --write --use-local-data",
+    "transactions:sync": "node transactions --sync",
+    "transactions:sync:local": "node transactions --sync --use-local-data"
   },
   "keywords": [],
   "author": "breakthestatic",

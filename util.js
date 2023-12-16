@@ -1,8 +1,4 @@
-import {createHash} from 'crypto'
 import db from './db.js'
-
-export const generateTransactionId = (...data) =>
-  createHash('sha256').update(data.join()).digest('hex')
 
 export const getActiveAccounts = () =>
   db
@@ -10,7 +6,10 @@ export const getActiveAccounts = () =>
     .filter(({enabled}) => enabled)
     .map(({account}) => account)
 
-export const lastNDays = (days = 10) => {
+export const lastNDays = (days) => {
+  // Return all when days isn't passed
+  if (!days) return () => true
+
   const cutoff = new Date(new Date().setHours(0, 0, 0, 0)).setDate(
     new Date().getDate() - days,
   )
