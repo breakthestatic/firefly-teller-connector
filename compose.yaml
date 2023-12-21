@@ -1,0 +1,8 @@
+services:
+  firefly-teller-connector:
+    container_name: firefly-teller-connector
+    image: firefly-teller-connector
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 8080:8080

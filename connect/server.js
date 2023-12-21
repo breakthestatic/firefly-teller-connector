@@ -1,11 +1,14 @@
 import express from 'express'
 import path from 'path'
-import db from '../db.js'
+import db from '../scripts/db.js'
+import {tellerClient} from '../scripts/axios.js'
 
 const __dirname = new URL('.', import.meta.url).pathname
 const port = 8080
 
 const app = express()
+
+app.use(express.json())
 
 // set the view engine to ejs
 app.set('view engine', 'ejs')
@@ -15,6 +18,40 @@ app.get('/', (req, res) => {
   res.render('pages/index', {
     applicationId: db.get('teller_app_id'),
   })
+})
+
+app.post('/api/enrollments', async (req, res) => {
+  const accounts = db.get('accounts') || []
+  const {accessToken, enrollment} = req.body
+  const institutionKey = enrollment.institution.name
+    .toLowerCase()
+    .replaceAll(/\s+/g, '_')
+
+  const institutions = {
+    ...db.get('institutions'),
+    [institutionKey]: {token: accessToken},
+  }
+
+  const updatedAccounts = await Promise.all(
+    Object.values(institutions).map(({token}) =>
+      tellerClient
+        .get('/accounts', {auth: {username: token}})
+        .then((response) => response.data),
+    ),
+  )
+
+  db.set('institutions', institutions)
+  db.set(
+    'accounts',
+    updatedAccounts.flat().map((account) => ({
+      enabled:
+        // Set to disabled initially but respect status for existing accounts
+        accounts.find(({account: {id}}) => id === account.id)?.enabled ?? false,
+      account,
+    })),
+  )
+
+  res.send('success')
 })
 
 app.use('/static', express.static(path.join(__dirname, '/static')))

@@ -1,17 +1,15 @@
 {
-  "name": "transaction-downloader",
+  "name": "firefly-teller-connector",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "accounts:update": "node update-accounts.js",
     "connect": "node connect/server.js",
     "connect:dev": "nodemon connect/server.js",
-    "transactions:download": "node transactions.js --write",
-    "transactions:download:local": "node transactions.js --write --use-local-data",
-    "transactions:sync": "node transactions --sync",
-    "transactions:sync:local": "node transactions --sync --use-local-data"
+    "transactions:download": "node scripts/transactions.js --write",
+    "transactions:download:local": "node scripts/transactions.js --write --use-local-data",
+    "transactions:sync": "node scripts/transactions --sync",
+    "transactions:sync:local": "node scripts/transactions --sync --use-local-data"
   },
   "keywords": [],
   "author": "breakthestatic",
