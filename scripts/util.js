@@ -15,3 +15,11 @@ export const lastNDays = (days) => {
   )
   return ({date}) => new Date(date) >= cutoff
 }
+
+export const log = (...args) => {
+  const date = new Date()
+  console.log(
+    `${date.toISOString().split('T')[0]} ${date.toLocaleTimeString()}`,
+    ...args,
+  )
+}

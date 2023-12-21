@@ -1,7 +1,7 @@
 services:
   firefly-teller-connector:
     container_name: firefly-teller-connector
-    image: firefly-teller-connector
+    image: ghcr.io/breakthestatic/firefly-teller-connector:latest
     volumes:
       - ./data:/app/data
     ports:

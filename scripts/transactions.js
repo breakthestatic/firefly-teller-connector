@@ -3,7 +3,7 @@ import {readFile} from 'fs/promises'
 import args from './args.js'
 import {importerClient, tellerClient} from './axios.js'
 import db from './db.js'
-import {getActiveAccounts, lastNDays} from './util.js'
+import {getActiveAccounts, lastNDays, log} from './util.js'
 import {stringify} from 'csv/sync'
 import path from 'path'
 
@@ -30,6 +30,8 @@ const headers = [
   'Counterparty',
 ]
 
+log('Starting sync')
+
 const transactionRequests = accounts.map(async (account) => {
   const source = useLocalData
     ? readFile(path.join(basePath, `${account.id}.json`)).then(JSON.parse)
@@ -41,7 +43,7 @@ const transactionRequests = accounts.map(async (account) => {
     .then(({data}) => data)
     .catch((error) => {
       if (error?.response?.data?.error?.message)
-        console.log(
+        log(
           `ERROR: ${error.response.data.error.message}`,
           `(${account.name} ${account.last_four})`,
           `Enrollment ID: ${account.enrollment_id}`,
@@ -93,9 +95,10 @@ if (transactions.length) {
 
     try {
       await importerClient.post(importerUrl, formData)
-      console.log('Complete')
     } catch (error) {
-      console.log(error)
+      log(error)
     }
   }
 }
+
+log('Sync complete')
