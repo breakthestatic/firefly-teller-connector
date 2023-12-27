@@ -1,7 +1,9 @@
 FROM node:20-alpine
 
-ENV DAYS_TO_FETCH=10
 ENV PORT=8080
+ENV DAYS_TO_FETCH=10
+ENV CRON_TIME="0 0 8,18 * * *"
+ENV SYNC=true
 
 EXPOSE $PORT
 
@@ -11,11 +13,6 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install
-COPY scripts/ ./scripts/
-COPY connect/ ./connect/
-RUN chmod 0755 scripts/cron.sh scripts/entry.sh
+COPY app/ ./
 
-RUN echo "* 8,18 * * * /app/scripts/cron.sh" > /app/crontab.txt
-RUN /usr/bin/crontab /app/crontab.txt
-
-CMD ["sh","/app/scripts/entry.sh"]
+CMD ["node","/app/entry.js"]

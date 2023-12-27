@@ -1,11 +1,10 @@
-import {mkdirSync, readFileSync, writeFileSync} from 'fs'
-import {readFile} from 'fs/promises'
+import path from 'path'
+import {readFile, mkdir, writeFile} from 'fs/promises'
+import {stringify} from 'csv/sync'
+import db from './db.js'
 import args from './args.js'
 import {importerClient, tellerClient} from './axios.js'
-import db from './db.js'
 import {getActiveAccounts, lastNDays, log} from './util.js'
-import {stringify} from 'csv/sync'
-import path from 'path'
 
 const {days, write, sync, useLocalData} = args
 const institutions = db.get('institutions')
@@ -53,8 +52,8 @@ const transactionRequests = accounts.map(async (account) => {
     })
 
   if (write) {
-    mkdirSync(basePath, {recursive: true})
-    writeFileSync(
+    await mkdir(basePath, {recursive: true})
+    writeFile(
       path.join(basePath, `${account.id}.json`),
       JSON.stringify({data}, null, 2),
     )
@@ -85,13 +84,16 @@ if (transactions.length) {
   ])
 
   if (write) {
-    writeFileSync(path.join(basePath, `${fileName}.csv`), payload)
+    writeFile(path.join(basePath, `${fileName}.csv`), payload)
   }
 
   if (sync) {
     const formData = new FormData()
     formData.append('importable', new Blob([payload]))
-    formData.append('json', new Blob([readFileSync('data/import_config.json')]))
+    formData.append(
+      'json',
+      new Blob([await readFile('data/import_config.json')]),
+    )
 
     try {
       await importerClient.post(importerUrl, formData)

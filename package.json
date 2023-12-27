@@ -4,18 +4,19 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "connect": "node connect/server.js",
-    "connect:dev": "nodemon connect/server.js",
-    "transactions:download": "node scripts/transactions.js --write",
-    "transactions:download:local": "node scripts/transactions.js --write --use-local-data",
-    "transactions:sync": "node scripts/transactions --sync",
-    "transactions:sync:local": "node scripts/transactions --sync --use-local-data"
+    "connect": "node app/connect/server.js",
+    "connect:dev": "nodemon app/connect/server.js",
+    "transactions:download": "node app/scripts/transactions.js --write",
+    "transactions:download:local": "node app/scripts/transactions.js --write --use-local-data",
+    "transactions:sync": "node app/scripts/transactions --sync",
+    "transactions:sync:local": "node app/scripts/transactions --sync --use-local-data"
   },
   "keywords": [],
   "author": "breakthestatic",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.2",
+    "cron": "^3.1.6",
     "csv": "^6.3.5",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
