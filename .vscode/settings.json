@@ -1,4 +1,7 @@
 {
   "editor.formatOnSave": true,
-  "javascript.preferences.importModuleSpecifierEnding": "js"
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "editor.rulers": [
+    80
+  ]
 }

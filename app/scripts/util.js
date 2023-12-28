@@ -17,9 +17,8 @@ export const lastNDays = (days) => {
 }
 
 export const log = (...args) => {
-  const date = new Date()
   console.log(
-    `${date.toISOString().split('T')[0]} ${date.toLocaleTimeString()}`,
+    new Date().toLocaleString('en-us', {timeZone: process.env.TZ}),
     ...args,
   )
 }
