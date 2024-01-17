@@ -10,7 +10,6 @@ const {days, write, sync, useLocalData} = args
 const institutions = db.get('institutions')
 const importerUrl = db.get('importerUrl')
 const accounts = getActiveAccounts()
-
 const basePath = './data/transactions'
 const fileName = new Date()
   .toISOString()
@@ -29,6 +28,8 @@ const headers = [
   'Counterparty',
 ]
 
+if (write) await mkdir(basePath, {recursive: true})
+
 log('Starting sync')
 
 const transactionRequests = accounts.map(async (account) => {
@@ -45,17 +46,16 @@ const transactionRequests = accounts.map(async (account) => {
         log(
           `ERROR: ${error.response.data.error.message}`,
           `(${account.name} ${account.last_four})`,
-          `Enrollment ID: ${account.enrollment_id}`,
+          `Enrollment ID: ${account.enrollment_id}`
         )
 
       return []
     })
 
-  if (write) {
-    await mkdir(basePath, {recursive: true})
+  if (write && !useLocalData) {
     writeFile(
       path.join(basePath, `${account.id}.json`),
-      JSON.stringify({data}, null, 2),
+      JSON.stringify({data}, null, 2)
     )
   }
 
@@ -88,15 +88,12 @@ if (transactions.length) {
   }
 
   if (sync) {
-    const formData = new FormData()
-    formData.append('importable', new Blob([payload]))
-    formData.append(
-      'json',
-      new Blob([await readFile('data/import_config.json')]),
-    )
+    const data = new FormData()
+    data.append('importable', new Blob([payload]))
+    data.append('json', new Blob([await readFile('data/import_config.json')]))
 
     try {
-      await importerClient.post(importerUrl, formData)
+      await importerClient.post(importerUrl, data)
     } catch (error) {
       log(error)
     }

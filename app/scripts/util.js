@@ -11,7 +11,7 @@ export const lastNDays = (days) => {
   if (!days) return () => true
 
   const cutoff = new Date(new Date().setHours(0, 0, 0, 0)).setDate(
-    new Date().getDate() - days,
+    new Date().getDate() - days
   )
   return ({date}) => new Date(date) >= cutoff
 }
@@ -19,6 +19,6 @@ export const lastNDays = (days) => {
 export const log = (...args) => {
   console.log(
     new Date().toLocaleString('en-us', {timeZone: process.env.TZ}),
-    ...args,
+    ...args
   )
 }
