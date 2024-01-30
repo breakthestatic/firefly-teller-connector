@@ -60,7 +60,6 @@ const transactionRequests = accounts.map(async (account) => {
   }
 
   return data
-    .filter(({status}) => status === 'posted')
     .filter(lastNDays(days))
     .map(({id, type, date, amount, description, details}) => [
       date,

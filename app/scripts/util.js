@@ -13,7 +13,10 @@ export const lastNDays = (days) => {
   const cutoff = new Date(new Date().setHours(0, 0, 0, 0)).setDate(
     new Date().getDate() - days
   )
-  return ({date}) => new Date(date) >= cutoff
+  return ({date, status, details: {processing_status}}) =>
+    new Date(date) >= cutoff &&
+    status === 'posted' &&
+    processing_status === 'complete'
 }
 
 export const log = (...args) => {
