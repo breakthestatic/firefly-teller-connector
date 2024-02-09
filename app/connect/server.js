@@ -9,14 +9,42 @@ const port = 8080
 const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 // set the view engine to ejs
 app.set('view engine', 'ejs')
 app.set('views', path.join(new URL('.', import.meta.url).pathname, '/views'))
 
 app.get('/', (req, res) => {
-  res.render('pages/index', {
-    applicationId: db.get('teller_app_id'),
+  const applicationId = db.get('tellerApplicationId')
+
+  if (applicationId) {
+    res.render('pages/index', {applicationId: db.get('tellerApplicationId')})
+  } else {
+    res.redirect('/settings')
+  }
+})
+
+app.get('/settings', (_, res) => {
+  const applicationId = db.get('tellerApplicationId')
+  const fireflyToken = db.get('fireflyToken')
+  const importerUrl = db.get('importerUrl')
+
+  res.render('pages/settings', {applicationId, fireflyToken, importerUrl})
+})
+
+app.post('/settings', (req, res) => {
+  const {applicationId, fireflyToken, importerUrl} = req.body
+
+  db.set('tellerApplicationId', applicationId)
+  db.set('fireflyToken', fireflyToken)
+  db.set('importerUrl', importerUrl)
+
+  res.render('pages/settings', {
+    applicationId,
+    fireflyToken,
+    importerUrl,
+    saved: true,
   })
 })
 
@@ -36,8 +64,8 @@ app.post('/api/enrollments', async (req, res) => {
     Object.values(institutions).map(({token}) =>
       tellerClient
         .get('/accounts', {auth: {username: token}})
-        .then((response) => response.data),
-    ),
+        .then((response) => response.data)
+    )
   )
 
   db.set('institutions', institutions)
@@ -48,7 +76,7 @@ app.post('/api/enrollments', async (req, res) => {
         // Set to disabled initially but respect status for existing accounts
         accounts.find(({account: {id}}) => id === account.id)?.enabled ?? false,
       account,
-    })),
+    }))
   )
 
   res.send('success')
