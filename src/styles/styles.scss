@@ -11,20 +11,24 @@
   --text-color: rgba(0, 0, 0, 0.87);
 }
 
-
 body {
   font-family: "Poppins", sans-serif;
   color: var(--text-color);
   display: flex;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+}
+
+#background {
+  width: 200vw;
+  height: 200vh;
   background-image: linear-gradient(to bottom right,
       #4affde 0%,
       #5b9dff 40%,
       #ff34d2 100%);
-  background-size: 200% 200%;
   animation: movingGradient 5s linear infinite alternate;
-  overflow: hidden;
+  position: fixed;
 }
 
 #app {
@@ -32,6 +36,7 @@ body {
   overflow: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 nav {
@@ -100,10 +105,10 @@ main {
 
 @keyframes movingGradient {
   from {
-    background-position: 0 0;
+    transform: translate(0, 0);
   }
 
   to {
-    background-position: 100% 100%;
+    transform: translate(-50%, -50%);
   }
 }
