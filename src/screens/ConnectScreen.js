@@ -7,7 +7,7 @@ export default function ConnectScreen() {
 
   const {open, ready} = useTellerConnect({
     applicationId,
-    environment: sandbox ? 'sandbox' : 'production',
+    environment: sandbox ? 'sandbox' : 'development',
     onSuccess: (enrollment) => {
       io('/remote/api/enrollments', {
         method: 'POST',
