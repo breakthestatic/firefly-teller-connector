@@ -1,0 +1,30 @@
+.override {
+  .MuiPaper-elevation {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    background: none;
+
+    .MuiGrid-item .MuiPaper-elevation {
+      border: none;
+    }
+
+    .MuiPaper-elevation {
+      .MuiBox-root {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+
+  .MuiGrid-container {
+    align-items: flex-start;
+
+    .MuiBox-root:has(.array-item-add) {
+      margin-top: 0;
+    }
+
+    &:not(:last-of-type) .MuiGrid-item:last-of-type {
+      margin-top: 30px;
+    }
+  }
+}

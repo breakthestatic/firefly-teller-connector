@@ -4,30 +4,41 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "connect": "node app/connect/server.js",
-    "connect:dev": "nodemon app/connect/server.js",
-    "transactions:download": "node app/scripts/transactions.js --write",
-    "transactions:download:local": "node app/scripts/transactions.js --write --use-local-data",
-    "transactions:sync": "node app/scripts/transactions --sync",
-    "transactions:sync:local": "node app/scripts/transactions --sync --use-local-data"
+    "prebuild": "rimraf dist",
+    "build": "parcel build --no-cache",
+    "connect:dev": "concurrently 'npm:connect:dev:server' 'npm:connect:dev:client'",
+    "connect:dev:client": "parcel watch",
+    "connect:dev:server": "nodemon --watch server server/index.js"
   },
   "keywords": [],
+  "source": "src/index.html",
   "author": "breakthestatic",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.2",
-    "cron": "^3.1.6",
-    "csv": "^6.3.5",
-    "ejs": "^3.1.9",
+    "@iconify/react": "^4.1.1",
+    "@rjsf/mui": "^5.17.1",
+    "@rjsf/validator-ajv8": "^5.17.1",
+    "app-root-path": "^3.1.0",
+    "compression": "^1.7.4",
     "express": "^4.18.2",
-    "simple-json-db": "^2.0.0",
-    "socks-proxy-agent": "^8.0.2",
-    "yargs": "^17.7.2"
+    "fast-json-stable-stringify": "^2.1.0",
+    "node-json-db": "^2.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-io": "^5.4.0-beta.5",
+    "react-router-dom": "^6.22.1",
+    "teller-connect-react": "^0.1.0",
+    "url-io": "^5.3.0-beta.2"
   },
   "devDependencies": {
-    "@types/node": "^20.9.2",
-    "eslint": "^8.54.0",
-    "nodemon": "^3.0.1",
-    "prettier": "^3.1.0"
+    "@parcel/transformer-sass": "^2.12.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "nodemon": "^3.1.0",
+    "parcel": "^2.12.0",
+    "prettier": "^3.2.5",
+    "process": "^0.11.10"
   }
 }

@@ -1,7 +1,6 @@
 {
   "editor.formatOnSave": true,
-  "javascript.preferences.importModuleSpecifierEnding": "js",
-  "editor.rulers": [
-    80
-  ]
+  "javascript.validate.enable": false,
+  "typescript.validate.enable": false,
+  "editor.rulers": [80]
 }

@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
-    "checkJs": false,
-    "target": "es2020",
-    "module": "esnext",
-    "jsx": "react",
-    "lib": ["esnext", "dom"],
-    "esModuleInterop": true, // force import
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true // force import
+    "paths": {
+      "/*": ["./*"]
+    }
   }
 }
