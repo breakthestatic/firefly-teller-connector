@@ -17,7 +17,7 @@ export default function SettingsScreen() {
     try {
       await Promise.all([
         new Promise((resolve) => setTimeout(resolve, 500)),
-        io('/remote/api/settings2', 'PUT', {
+        io('/remote/api/settings', 'PUT', {
           body: formData,
           headers: {'Content-Type': 'application/json'},
         }),
