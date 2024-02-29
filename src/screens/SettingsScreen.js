@@ -17,10 +17,9 @@ export default function SettingsScreen() {
     try {
       await Promise.all([
         new Promise((resolve) => setTimeout(resolve, 500)),
-        io('/remote/api/settings', 'POST', {
+        io('/remote/api/settings2', 'PUT', {
           body: formData,
           headers: {'Content-Type': 'application/json'},
-          returnStateWrapper: true,
         }),
       ])
     } catch (error) {
@@ -56,7 +55,7 @@ export default function SettingsScreen() {
         default: [],
         items: {
           type: 'string',
-          oneOf: Object.keys(settings?.accounts).length
+          oneOf: Object.keys(settings?.accounts || {}).length
             ? Object.entries(settings.accounts).map(
                 ([key, {institution, name, last_four}]) => ({
                   type: 'string',

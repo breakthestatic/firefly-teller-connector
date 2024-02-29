@@ -3,9 +3,9 @@ import path from 'path'
 import {readFileSync} from 'fs'
 import compression from 'compression'
 import appRoot from 'app-root-path'
-import settings from './api/settings.js'
+import settings from '/src/server/api/settings'
 
-const clientRoot = appRoot.resolve('/dist')
+const clientRoot = appRoot.resolve('/dist/client')
 const port = 8080
 
 const app = express()

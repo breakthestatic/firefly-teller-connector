@@ -2,16 +2,24 @@
   "name": "firefly-teller-connector",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "parcel build --no-cache",
-    "connect:dev": "concurrently 'npm:connect:dev:server' 'npm:connect:dev:client'",
-    "connect:dev:client": "parcel watch",
-    "connect:dev:server": "nodemon --watch server server/index.js"
+    "connect:dev": "concurrently 'npm:connect:dev:server' 'npm:connect:dev:watch'",
+    "connect:dev:watch": "parcel watch --no-cache",
+    "preconnect:dev:server": "mkdir -p dist/server && touch dist/server/index.js",
+    "connect:dev:server": "nodemon --watch dist/server dist/server/index.js"
   },
   "keywords": [],
-  "source": "src/index.html",
+  "targets": {
+    "client": {
+      "source": "src/index.html"
+    },
+    "server": {
+      "source": "src/server/index.js",
+      "context": "node"
+    }
+  },
   "author": "breakthestatic",
   "license": "MIT",
   "dependencies": {
